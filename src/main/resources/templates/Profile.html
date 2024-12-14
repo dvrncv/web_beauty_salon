@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #e8f5e9;
+            padding: 2rem;
+        }
+        .profile-container {
+            background-color: #a5d6a7;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        h1 {
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .profile-label {
+            font-weight: bold;
+            color: #1b5e20;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar}"></div>
+<div class="profile-container">
+    <h1>Your Profile</h1>
+    <dl class="row">
+        <dt class="col-sm-4 profile-label">Name:</dt>
+        <dd class="col-sm-8" th:text="${user.name}">John Doe</dd>
+
+        <dt class="col-sm-4 profile-label">Surname:</dt>
+        <dd class="col-sm-8" th:text="${user.surname}">Doe</dd>
+
+        <dt class="col-sm-4 profile-label">Email:</dt>
+        <dd class="col-sm-8" th:text="${user.email}">johndoe@example.com</dd>
+
+        <dt class="col-sm-4 profile-label">Phone:</dt>
+        <dd class="col-sm-8" th:text="${user.numberPhone}">+1234567890</dd>
+    </dl>
+    <div class="text-center">
+        <a href="/home" class="btn btn-green">Back to Home</a>
+    </div>
+</div>
+</body>
+</html>

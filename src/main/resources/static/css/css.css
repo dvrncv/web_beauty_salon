@@ -1,0 +1,331 @@
+* {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+.search-form {
+    margin: 20px auto;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.search-form form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.search-form input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 80%;
+}
+.search-form button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.search-form button:hover {
+    background-color: #45a049;
+}
+
+.catalog-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.container {
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.salon-info {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.salon-info h1 {
+    color: #28a745;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.salon-info p {
+    font-size: 18px;
+    color: #777;
+}
+
+.card-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    text-align: center;
+    color: #28a745;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.card-info {
+    margin-top: 20px;
+}
+
+.card-info p {
+    font-size: 16px;
+    color: #333;
+    margin: 8px 0;
+}
+
+.card-info strong {
+    color: #555;
+}
+
+footer {
+    margin-top: 50px;
+    background-color: #28a745;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.add-category-button, .add-loyalty-card-button, button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-category-button:hover, .add-loyalty-card-button:hover, button:hover {
+    background-color: #45a049;
+}
+
+table, .loyalty-card-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+}
+
+table th, table td, .loyalty-card-table th, .loyalty-card-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+table th, .loyalty-card-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.form-container {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.form-container input, .form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-container textarea {
+    height: 150px;
+    resize: none;
+}
+
+.employee-cards, .service-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    margin-top: 20px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #28a745;
+    margin-bottom: 30px;
+}
+
+.service-item, .employee-card {
+    background-color: #e9f7e4;
+    border: 2px solid #28a745;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    position: relative;
+}
+
+
+.employee-card, .service-card {
+    background-color: #e9f7e4;
+    border: 2px solid #28a745;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    position: relative;
+}
+
+.employee-card h5, .service-card h5 {
+    color: #28a745;
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.employee-card p, .service-card p {
+    font-size: 16px;
+    color: #555;
+    margin: 8px 0;
+}
+
+
+.sidebar {
+    width: 250px;
+    padding: 15px;
+    border-right: 1px solid #ccc;
+    flex-shrink: 0;
+}
+
+.sidebar h3 {
+    font-size: 24px;
+    color: #28a745;
+    margin-bottom: 15px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #555;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.sidebar a:hover {
+    background-color: #f0f0f0;
+    color: #28a745;
+}
+.service-item {
+    margin-bottom: 20px;
+}
+.services {
+    flex-grow: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.services h3 {
+    font-size: 24px;
+    color: #28a745;
+    margin-bottom: 15px;
+}
+
+.service-item {
+    background-color: #e9f7e4;
+    border: 2px solid #28a745;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service-item:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.service-item h4 {
+    font-size: 20px;
+    color: #28a745;
+    margin-bottom: 10px;
+}
+
+.service-item p {
+    font-size: 16px;
+    color: #555;
+}
+.catalog-container {
+    display: flex;
+    gap: 20px;
+}
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
+}
+.search-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.search-form input,
+.search-form select,
+.search-form button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

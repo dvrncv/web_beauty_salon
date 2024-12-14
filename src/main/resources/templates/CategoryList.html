@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель категорий</title>
+    <link rel="stylesheet" href="/css/css.css">
+
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar}"></div>
+
+<div class="container">
+    <div th:if="${categories != null}">
+        <a href="/category/create">
+            <button class="add-category-button">Создать</button>
+        </a>
+    </div>
+
+    <div th:if="${categories != null}">
+        <h1>Категории</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categories}">
+                <td th:text="${category.name}"></td>
+                <td th:text="${category.description}"></td>
+                <td>
+                    <a th:href="@{/category/update/{id}(id=${category.id})}">
+                        <button class="add-category-button">Обновить</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${categories == null and updateCategory == null}">
+        <h1>Создание категории</h1>
+        <div class="form-container">
+            <form action="/category/create" method="post">
+                <label for="name">Название:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="description">Описание:</label>
+                <textarea id="description" name="description"></textarea>
+                <button type="submit">Создать</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${updateCategory != null}">
+        <h1>Обновление категории</h1>
+        <div class="form-container">
+            <form th:action="@{/category/update/{id}(id=${updateCategory.id})}" method="post" th:object="${updateCategory}">
+                <label for="name">Название:</label>
+                <input type="text" id="name" name="name" th:value="${updateCategory.name}" required>
+                <label for="description">Описание:</label>
+                <textarea id="description" name="description" th:text="${updateCategory.description}"></textarea>
+                <button type="submit" class="add-category-button">Обновить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

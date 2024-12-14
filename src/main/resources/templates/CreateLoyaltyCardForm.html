@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание карты лояльности</title>
+    <link rel="stylesheet" href="/css/css.css">
+
+</head>
+<body>
+
+
+<div class="container">
+    <h1>Создание карты лояльности</h1>
+
+    <form action="/loyalty/create" method="POST">
+        <label for="clientId">Выберите клиента:</label>
+        <select id="clientId" name="clientId" required>
+            <option value="">-- Выберите клиента --</option>
+            <th:block th:each="client : ${clients}">
+                <option th:value="${client.id}" th:text="${client.name + ' ' + client.surname}"></option>
+            </th:block>
+        </select>
+        <button type="submit">Создать карту</button>
+    </form>
+</div>
+
+</body>
+</html>

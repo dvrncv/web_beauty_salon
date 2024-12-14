@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${service.name}">Service Details</title>
+    <link rel="stylesheet" href="/css/css.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar}"></div>
+
+<div class="container">
+    <div class="salon-info">
+        <h1 th:text="${salon.nameSalon}">Beauty People</h1>
+        <p th:text="${salon.staticInformation}">Всегда делаем красоту для вас!</p>
+    </div>
+
+    <div class="service-details">
+        <h2 th:text="${service.name}"></h2>
+        <p th:text="'Цена: ' + ${service.price} + ' рублей'"></p>
+        <p th:text="'Продолжительность: ' + ${service.duration} + ' минут'"></p>
+        <p th:text="${service.description}"></p>
+        <p th:text="'Категория: ' + ${service.categoryName}"></p>
+        <a href="/catalog" class="btn-back">Назад к каталогу</a>
+    </div>
+</div>
+
+</body>
+</html>

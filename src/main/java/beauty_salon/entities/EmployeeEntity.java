@@ -2,6 +2,7 @@ package beauty_salon.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,21 +10,24 @@ import java.util.List;
 public class EmployeeEntity extends BaseEntity {
     private String name;
     private String surname;
-    private Integer workExperience;
-    private Integer numberPhone;
-    private SalonEntity salon;
+    private String numberPhone;
+    private String email;
+    private String password;
+    private List<Role> roles;
     private List<AppointmentServiceEntity> appointmentServiceEntityList;
+    private List<GrafikEntity> grafikEntityList;
 
-    public EmployeeEntity(String name, String surname, Integer workExperience, Integer numberPhone, SalonEntity salon, List<AppointmentServiceEntity> appointmentServiceEntityList) {
-        this.name = name;
-        this.surname = surname;
-        this.workExperience = workExperience;
-        this.numberPhone = numberPhone;
-        this.salon = salon;
-        this.appointmentServiceEntityList = appointmentServiceEntityList;
+    public EmployeeEntity() {
+        this.roles = new ArrayList<>();
     }
 
-    protected EmployeeEntity() {
+    public EmployeeEntity(String name, String surname, String numberPhone, String email, String password) {
+        this();
+        this.name = name;
+        this.surname = surname;
+        this.numberPhone = numberPhone;
+        this.email = email;
+        this.password = password;
     }
 
     @Column(name = "name")
@@ -44,33 +48,42 @@ public class EmployeeEntity extends BaseEntity {
         this.surname = surname;
     }
 
-    @Column(name = "work_experience")
-    public Integer getWorkExperience() {
-        return workExperience;
-    }
-
-    public void setWorkExperience(Integer workExperience) {
-        this.workExperience = workExperience;
-    }
-
     @Column(name = "number_phone")
-    public Integer getNumberPhone() {
+    public String getNumberPhone() {
         return numberPhone;
     }
 
-    public void setNumberPhone(Integer numberPhone) {
+    public void setNumberPhone(String numberPhone) {
         this.numberPhone = numberPhone;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "salon_id")
-    public SalonEntity getSalon() {
-        return salon;
+    @Column(name = "email")
+    public String getEmail() {
+        return email;
     }
 
-    public void setSalon(SalonEntity salon) {
-        this.salon = salon;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
+    @Column(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     @OneToMany(fetch = FetchType.LAZY, targetEntity = AppointmentServiceEntity.class, mappedBy = "employee")
     public List<AppointmentServiceEntity> getAppointmentServiceEntityList() {
         return appointmentServiceEntityList;
@@ -78,5 +91,14 @@ public class EmployeeEntity extends BaseEntity {
 
     public void setAppointmentServiceEntityList(List<AppointmentServiceEntity> appointmentServiceEntityList) {
         this.appointmentServiceEntityList = appointmentServiceEntityList;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = GrafikEntity.class, mappedBy = "employee")
+    public List<GrafikEntity> getGrafikEntityList() {
+        return grafikEntityList;
+    }
+
+    public void setGrafikEntityList(List<GrafikEntity> grafikEntityList) {
+        this.grafikEntityList = grafikEntityList;
     }
 }

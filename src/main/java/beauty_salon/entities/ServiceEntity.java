@@ -1,8 +1,5 @@
 package beauty_salon.entities;
-
 import jakarta.persistence.*;
-
-import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -11,17 +8,17 @@ public class ServiceEntity extends BaseEntity {
     private String name;
     private String description;
     private Integer price;
-    private LocalTime duration;
-    private SalonEntity salon;
+    private Integer duration;
+    private boolean isDeleted;
     private CategoryEntity category;
     private List<AppointmentServiceEntity> appointmentServiceEntityList;
 
-    public ServiceEntity(String name, String description, Integer price, LocalTime duration, SalonEntity salon, CategoryEntity category, List<AppointmentServiceEntity> appointmentServiceEntityList) {
+    public ServiceEntity(String name, String description, Integer price, Integer duration, boolean isDeleted,  CategoryEntity category, List<AppointmentServiceEntity> appointmentServiceEntityList) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.duration = duration;
-        this.salon = salon;
+        this.isDeleted = isDeleted;
         this.category = category;
         this.appointmentServiceEntityList = appointmentServiceEntityList;
     }
@@ -57,22 +54,12 @@ public class ServiceEntity extends BaseEntity {
     }
 
     @Column(name = "duration")
-    public LocalTime getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(LocalTime duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "salon_id")
-    public SalonEntity getSalon() {
-        return salon;
-    }
-
-    public void setSalon(SalonEntity salon) {
-        this.salon = salon;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -92,5 +79,14 @@ public class ServiceEntity extends BaseEntity {
 
     public void setAppointmentServiceEntityList(List<AppointmentServiceEntity> appointmentServiceEntityList) {
         this.appointmentServiceEntityList = appointmentServiceEntityList;
+    }
+
+    @Column(name = "is_deleted")
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

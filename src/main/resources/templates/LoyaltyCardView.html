@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Карта лояльности</title>
+  <link rel="stylesheet" href="/css/css.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar}"></div>
+
+<div class="salon-info">
+  <h1 th:text="${salon.nameSalon}">Beauty People</h1>
+  <p th:text="${salon.staticInformation}">Всегда делаем красоту для вас!</p>
+</div>
+
+<div class="card-container">
+  <div class="card-header">Карта лояльности</div>
+  <div class="card-info">
+    <p><strong>Номер карты:</strong> <span th:text="${loyaltyCard.numberCard}"></span></p>
+    <p><strong>Имя клиента:</strong> <span th:text="${loyaltyCard.clientName} + ' ' + ${loyaltyCard.clientSurname}"></span></p>
+    <p><strong>Баллы:</strong> <span th:text="${loyaltyCard.balancePoint}"></span></p>
+    <p><strong>Дата выпуска:</strong> <span th:text="${loyaltyCard.dateIssue}"></span></p>
+  </div>
+</div>
+
+</body>
+</html>

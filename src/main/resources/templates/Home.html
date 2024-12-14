@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Домашняя страница</title>
+    <link rel="stylesheet" href="/css/css.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar}"></div>
+
+<div class="container">
+    <div class="salon-info">
+        <h1 th:text="${salon.nameSalon}">Beauty People</h1>
+        <p th:text="${salon.staticInformation}">Всегда делаем красоту для вас!</p>
+    </div>
+
+
+    <h2>Лучшие сотрудники</h2>
+    <div class="employee-cards">
+        <div class="employee-card" th:each="employee : ${topEmployees}">
+            <h5 th:text="${employee.name} + ' ' + ${employee.surname}"></h5>
+            <p><strong>Количество клиентов:</strong> <span th:text="${employee.clientCount}"></span></p>
+        </div>
+    </div>
+
+
+    <h2>Лучшие услуги</h2>
+    <div class="service-cards">
+        <div class="service-card" th:each="service : ${topServices}">
+            <h5 th:text="${service.name}">Название услуги</h5>
+            <p><strong>Описание:</strong> <span th:text="${service.description}"></span></p>
+            <p><strong>Стоимость:</strong> <span th:text="${service.price}"></span> руб</p>
+            <p><strong>Продолжительность:</strong> <span th:text="${service.duration}"></span> минут</p>
+            <p><strong>Категория:</strong> <span th:text="${service.categoryName}"></span></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

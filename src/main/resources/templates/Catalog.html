@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog</title>
+    <link rel="stylesheet" href="/css/css.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar}"></div>
+
+<div class="container">
+    <div class="salon-info">
+        <h1 th:text="${salon.nameSalon}">Beauty People</h1>
+        <p th:text="${salon.staticInformation}">Всегда делаем красоту для вас!</p>
+    </div>
+    
+    <div class="search-form">
+        <form action="/catalog" method="get">
+            <input type="text" name="searchService" placeholder="Поиск услуги"
+                   th:value="${categoryPageViewModel.serviceSerachInputModel.searchService}" />
+            <input type="hidden" name="page" th:value="${categoryPageViewModel.serviceSerachInputModel.page}" />
+            <input type="hidden" name="size" th:value="${categoryPageViewModel.serviceSerachInputModel.size}" />
+            <button type="submit">Поиск</button>
+        </form>
+    </div>
+
+    <div class="catalog-container">
+        <div class="sidebar">
+            <h3>Категории</h3>
+            <ul>
+                <th:block th:each="category : ${categoryPageViewModel.category}">
+                    <li>
+                        <a th:href="@{/catalog/category/{categoryId}(categoryId=${category.id})}"
+                           th:text="${category.name}"></a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+
+        <div class="services">
+            <h3>Услуги</h3>
+            <th:block th:if="${categoryPageViewModel.cardServiceViewModel == null or #lists.isEmpty(categoryPageViewModel.cardServiceViewModel)}">
+                <p>Нет услуг по вашему запросу.</p>
+            </th:block>
+
+            <th:block th:each="service : ${categoryPageViewModel.cardServiceViewModel}">
+                <div class="service-item">
+                    <h4 th:text="${service.name}"></h4>
+                    <p th:text="'Цена: ' + ${service.price} + ' рублей'"></p>
+                    <p th:text="'Продолжительность: ' + ${service.duration} + ' минут'"></p>
+                    <p th:text="${service.description}"></p>
+                    <a th:href="@{/service/{serviceId}(serviceId=${service.id})}" class="btn-detail">Подробнее</a>
+                </div>
+            </th:block>
+
+            <div class="pagination">
+                <th:block th:if="${categoryPageViewModel.serviceSerachInputModel.page > 1}">
+                    <a th:href="@{/catalog(page=${categoryPageViewModel.serviceSerachInputModel.page - 1}, searchService=${categoryPageViewModel.serviceSerachInputModel.searchService}, categoryId=${categoryPageViewModel.serviceSerachInputModel.categoryId})}">Предыдущая</a>
+                </th:block>
+
+                <th:block th:if="${categoryPageViewModel.cardServiceViewModel.size() == categoryPageViewModel.serviceSerachInputModel.size}">
+                    <a th:href="@{/catalog(page=${categoryPageViewModel.serviceSerachInputModel.page + 1}, searchService=${categoryPageViewModel.serviceSerachInputModel.searchService}, categoryId=${categoryPageViewModel.serviceSerachInputModel.categoryId})}">Следующая</a>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

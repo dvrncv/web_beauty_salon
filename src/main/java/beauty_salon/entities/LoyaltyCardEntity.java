@@ -13,13 +13,13 @@ public class LoyaltyCardEntity {
     private Integer balancePoint;
     private ClientEntity client;
 
-    public LoyaltyCardEntity(Long numberCard, LocalDate dateIssue, String status, Integer balancePoint, ClientEntity client) {
-        this.numberCard = numberCard;
-        this.dateIssue = dateIssue;
-        this.status = status;
-        this.balancePoint = balancePoint;
+    public LoyaltyCardEntity (ClientEntity client) {
+        this.dateIssue = LocalDate.now();
+        this.status = "Активна";
+        this.balancePoint =0;
         this.client = client;
     }
+
 
     protected LoyaltyCardEntity() {
     }
@@ -62,7 +62,7 @@ public class LoyaltyCardEntity {
         this.balancePoint = balancePoint;
     }
 
-    @OneToOne(fetch = FetchType.LAZY,targetEntity = ClientEntity.class)
+    @OneToOne(fetch = FetchType.EAGER,targetEntity = ClientEntity.class)
     @JoinColumn(name = "client_id", unique = true)
     public ClientEntity getClient() {
         return client;

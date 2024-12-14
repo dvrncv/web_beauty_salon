@@ -2,6 +2,7 @@ package beauty_salon.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -10,21 +11,24 @@ public class ClientEntity extends BaseEntity {
 
     private String name;
     private String surname;
-    private Integer numberPhone;
+    private String numberPhone;
     private String email;
+    private String password;
     private LoyaltyCardEntity loyaltyCard;
     private List<AppointmentServiceEntity> appointmentServiceEntityList;
 
-    public ClientEntity(String name, String surname, Integer numberPhone, String email, LoyaltyCardEntity loyaltyCard, List<AppointmentServiceEntity> appointmentServiceEntityList) {
+
+    public ClientEntity(String name, String surname, String numberPhone, String email, String password, LoyaltyCardEntity loyaltyCard, List<AppointmentServiceEntity> appointmentServiceEntityList) {
         this.name = name;
         this.surname = surname;
         this.numberPhone = numberPhone;
         this.email = email;
+        this.password = password;
         this.loyaltyCard = loyaltyCard;
         this.appointmentServiceEntityList = appointmentServiceEntityList;
     }
+    protected ClientEntity(){
 
-    protected ClientEntity() {
     }
 
     @Column(name = "name")
@@ -46,11 +50,11 @@ public class ClientEntity extends BaseEntity {
     }
 
     @Column(name = "number_phone")
-    public Integer getNumberPhone() {
+    public String getNumberPhone() {
         return numberPhone;
     }
 
-    public void setNumberPhone(Integer numberPhone) {
+    public void setNumberPhone(String numberPhone) {
         this.numberPhone = numberPhone;
     }
 
@@ -61,6 +65,15 @@ public class ClientEntity extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Column(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @OneToMany(fetch = FetchType.LAZY, targetEntity = AppointmentServiceEntity.class, mappedBy = "client")

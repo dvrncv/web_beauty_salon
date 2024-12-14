@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация сотрудника</title>
+</head>
+<body>
+<h1>Регистрация нового сотрудника</h1>
+
+<form th:action="@{/users/register-employee}" th:object="${userRegistrationDto}" method="post">
+    <label for="name">Имя:</label>
+    <input type="text" id="name" th:field="*{name}" required>
+    <br>
+
+    <label for="surname">Фамилия:</label>
+    <input type="text" id="surname" th:field="*{surname}" required>
+    <br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" th:field="*{email}" required>
+    <br>
+
+    <label for="number_phone">Телефон:</label>
+    <input type="text" id="number_phone" th:field="*{number_phone}" required>
+    <br>
+
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" th:field="*{password}" required>
+    <br>
+
+    <label for="confirmPassword">Подтвердите пароль:</label>
+    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required>
+    <br>
+
+    <button type="submit">Зарегистрировать</button>
+</form>
+
+<p th:if="${error != null}" style="color: red;" th:text="${error}"></p>
+</body>
+</html>

@@ -2,19 +2,12 @@ package beauty_salon.service.Impl;
 
 import beauty_salon.DTO.CategoryDTO;
 import beauty_salon.entities.CategoryEntity;
-import beauty_salon.entities.ServiceEntity;
 import beauty_salon.exception.EntityNotFoundException;
 import beauty_salon.repository.CategoryRepository;
-import beauty_salon.repository.ServiceRepository;
 import beauty_salon.service.CategoryService;
-import form.SearchInputModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import viewmodel.BaseViewModel;
-import viewmodel.category.CategoryPageViewModel;
-import viewmodel.category.CategoryViewModel;
-import viewmodel.service.CardServiceViewModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,16 +45,17 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public String getCategoryNameById(Long categoryId) {
         CategoryEntity category = categoryRepository.findById(categoryId).orElse(null);
-        return category != null ? category.getName() : "Category not found";
+        return category != null ? category.getName() : "Категория не найдена";
     }
 
 
     @Override
     public ResponseEntity<CategoryDTO> updateCategory(Long id, CategoryDTO categoryDTO) {
         CategoryEntity categoryEntity = categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category with ID " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Категория с id " + id + " не найдена"));
         if (categoryDTO.getName() != null) {
             categoryEntity.setName(categoryDTO.getName());
         }

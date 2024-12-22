@@ -4,7 +4,6 @@ import beauty_salon.enums.StaffRoles;
 import beauty_salon.repository.ClientRepository;
 import beauty_salon.repository.UserRepository;
 import beauty_salon.service.Impl.AppUserDetailsService;
-import beauty_salon.service.Impl.AuthService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,14 +39,13 @@ public class AppSecurityConfiguration {
                                         .permitAll()
                                         .requestMatchers("/favicon.ico").permitAll()
                                         .requestMatchers("/error").permitAll()
-                                        .requestMatchers("/", "/users/login", "/users/logout", "/users/profile","/users/register-client", "/users/login-error")
+                                        .requestMatchers("/", "/users/login", "/users/logout", "/users/register-client", "/users/login-error")
                                         .permitAll().
                                         requestMatchers("/users/profile").authenticated().
-                                        requestMatchers("/employees/appointment").hasRole(StaffRoles.EMPLOYEE.name()).
-                                        requestMatchers("/category/list", "/category/create", "/category/update/{id}","/employee/list", "/users/register-employee","/loyalty/list", "/loyalty/create").hasRole(StaffRoles.ADMIN.name()).
-                                        requestMatchers("/catalog","/users/profile","/loyalty/card","/home").hasRole("CLIENT").
+                                        requestMatchers("/employee/create/grafik", "/employee/grafik","/employee/appointment").hasRole(StaffRoles.EMPLOYEE.name()).
+                                        requestMatchers("/service/list","/service/create","/service/update/{id}","/category/list", "/category/create", "/category/update/{id}", "/employee/list", "/users/register-employee", "/loyalty/list", "/loyalty/create","/booking/client-appointments","/booking/add-points").hasRole(StaffRoles.ADMIN.name()).
+                                        requestMatchers("/service/{id}","/catalog", "/catalog/service/{serviceId}","/catalog/category/{categoryId}","/users/profile", "/loyalty/card", "/home", "/booking/service/{serviceId}/appoinment", "booking/service/{serviceId}").hasRole("CLIENT").
                                         anyRequest().authenticated()
-//        anyRequest().permitAll()
 
                 )
                 .formLogin(
@@ -56,7 +54,16 @@ public class AppSecurityConfiguration {
                                         loginPage("/users/login").
                                         usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY).
                                         passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY).
-                                        defaultSuccessUrl("/home").
+                                        successHandler((request, response, authentication) -> {
+                                            String redirectUrl = "/home";
+                                            if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                                                redirectUrl = "/booking/client-appointments";
+                                            }
+                                            else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_EMPLOYEE"))) {
+                                                redirectUrl = "/employee/grafik";
+                                            }
+                                            response.sendRedirect(redirectUrl);
+                                        }).
                                         failureForwardUrl("/users/login-error")
                 )
                 .logout((logout) ->
@@ -88,6 +95,7 @@ public class AppSecurityConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() { return new AppUserDetailsService(userRepository, clientRepository);
+    public UserDetailsService userDetailsService() {
+        return new AppUserDetailsService(userRepository, clientRepository);
     }
 }

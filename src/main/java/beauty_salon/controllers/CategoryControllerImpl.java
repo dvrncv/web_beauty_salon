@@ -5,78 +5,81 @@ import beauty_salon.service.CategoryService;
 import controllers.CategoryController;
 import form.CreateCategoryInputModel;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import viewmodel.category.CategoryViewModel;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/category")
 public class CategoryControllerImpl implements CategoryController {
     private final CategoryService categoryService;
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
 
     public CategoryControllerImpl(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
-    @GetMapping("/list")
-    public String listCategories(Model model) {
+
+    @Override
+    public String listCategories(Principal principal, Model model) {
+        LOG.info("GET:/category/list Show all categories request from " + principal.getName());
+
         List<CategoryDTO> categories = categoryService.getAllCategories();
         List<CategoryViewModel> categoryViewModels = categories.stream()
-                .map(categoryDTO -> {
-                    CategoryViewModel categoryViewModel = new CategoryViewModel();
-                    categoryViewModel.setId(categoryDTO.getId());
-                    categoryViewModel.setName(categoryDTO.getName());
-                    categoryViewModel.setDescription(categoryDTO.getDescription());
-                    return categoryViewModel;
-                })
+                .map(category -> new CategoryViewModel(
+                        category.getId(),
+                        category.getName(),
+                        category.getDescription()))
                 .collect(Collectors.toList());
         model.addAttribute("categories", categoryViewModels);
         return "CategoryList.html";
     }
 
-    @GetMapping("/create")
-    public String createCategory(Model model){
+    @Override
+    public String createCategory(Principal principal, Model model){
+        LOG.info("GET:/category/create Create category request from " + principal.getName());
+
+        model.addAttribute("createCategory", new CreateCategoryInputModel());
         return "CategoryList.html";
     }
 
     @Override
-    @PostMapping("/create")
-    public String createCategory(
-            @Valid @ModelAttribute("createCategory") CreateCategoryInputModel createCategory,
-            Model model
-    ) {
+    public String createCategory(@Valid @ModelAttribute("createCategory") CreateCategoryInputModel createCategory,
+                                 Principal principal, Model model) {
+        LOG.info("POST:/category/create Create category request from " + principal.getName());
+
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setName(createCategory.getName());
         categoryDTO.setDescription(createCategory.getDescription());
         categoryService.createCategory(categoryDTO);
-        model.addAttribute("message", "Category created successfully!");
         return "redirect:/category/list";
     }
-    @GetMapping("/update/{id}")
-    public String updateCategory(
-            @PathVariable("id") Long id, Model model
-    )
-    {
+
+    @Override
+    public String updateCategory(@PathVariable("id") Long id,
+                                 Principal principal, Model model) {
+        LOG.info("GET:/category/update Update category request from " + principal.getName());
+
         CategoryDTO categoryDTO = categoryService.findById(id).getBody();
         model.addAttribute("updateCategory", categoryDTO);
         return "CategoryList.html";
     }
 
     @Override
-    @PostMapping("/update/{id}")
-    public String updateCategory(
-            @PathVariable("id") Long id,
-            @Valid @ModelAttribute("updateCategory") CreateCategoryInputModel createCategoryInputModel,
-            Model model
-    ) {
+    public String updateCategory(@PathVariable("id") Long id,
+                                 @Valid @ModelAttribute("updateCategory") CreateCategoryInputModel createCategoryInputModel, Principal principal,
+                                 Model model) {
+        LOG.info("POST:/category/update Update category request from " + principal.getName());
+
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setName(createCategoryInputModel.getName());
         categoryDTO.setDescription(createCategoryInputModel.getDescription());
         categoryService.updateCategory(id, categoryDTO);
-        model.addAttribute("message", "Category updated successfully!");
         return "redirect:/category/list";
     }
 }

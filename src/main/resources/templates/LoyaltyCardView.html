@@ -1,27 +1,85 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Карта лояльности</title>
-  <link rel="stylesheet" href="/css/css.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #212529;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .card-info p {
+      font-size: 1.25rem;
+      color: #212529;
+      margin-bottom: 15px;
+    }
+
+    .card-info strong {
+      color: #4CAF50;
+    }
+
+    .hero {
+      color: white;
+      padding: 50px 0;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      color: #4CAF50;
+      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      color: #4CAF50;
+      font-weight: 300;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    }
+    .loyalty-container {
+      background-color: white;
+      border-radius: 5px;
+      padding: 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      margin: 2rem auto;
+    }
+    .loyalty-label {
+      font-weight: bold;
+      color: #4CAF50;
+    }
+  </style>
 </head>
 <body>
 
 <div th:replace="~{fragments/navbar}"></div>
 
-<div class="salon-info">
-  <h1 th:text="${salon.nameSalon}">Beauty People</h1>
-  <p th:text="${salon.staticInformation}">Всегда делаем красоту для вас!</p>
-</div>
-
-<div class="card-container">
-  <div class="card-header">Карта лояльности</div>
-  <div class="card-info">
-    <p><strong>Номер карты:</strong> <span th:text="${loyaltyCard.numberCard}"></span></p>
-    <p><strong>Имя клиента:</strong> <span th:text="${loyaltyCard.clientName} + ' ' + ${loyaltyCard.clientSurname}"></span></p>
-    <p><strong>Баллы:</strong> <span th:text="${loyaltyCard.balancePoint}"></span></p>
-    <p><strong>Дата выпуска:</strong> <span th:text="${loyaltyCard.dateIssue}"></span></p>
+<div class="hero">
+  <div class="container">
+    <h1 th:text="${salon.nameSalon}">Beauty People</h1>
+    <p th:text="${salon.staticInformation}">Всегда делаем красоту для вас!</p>
   </div>
 </div>
 
+<div class="loyalty-container">
+  <h1>Моя карта лояльности</h1>
+  <dl class="row">
+    <dt class="col-sm-4 loyalty-label">Номер карты:</dt>
+    <dd class="col-sm-8" th:text="${loyaltyCard.numberCard}"></dd>
+    <dt class="col-sm-4 loyalty-label">Имя клиента:</dt>
+    <dd class="col-sm-8" th:text="${loyaltyCard.clientName} + ' ' + ${loyaltyCard.clientSurname}"></dd>
+    <dt class="col-sm-4 loyalty-label">Баллы:</dt>
+    <dd class="col-sm-8" th:text="${loyaltyCard.balancePoint}"></dd>
+    <dt class="col-sm-4 loyalty-label">Дата выпуска:</dt>
+    <dd class="col-sm-8" th:text="${loyaltyCard.dateIssue}"></dd>
+  </dl>
+</div>
 </body>
 </html>

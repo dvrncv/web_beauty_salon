@@ -14,14 +14,16 @@ public class AppointmentServiceEntity extends BaseEntity {
     private ClientEntity client;
     private ServiceEntity service;
     private EmployeeEntity employee;
+    private boolean isPointsAdded;
 
-    public AppointmentServiceEntity(LocalDate dateStart, LocalTime timeStart, Integer totalCost, ClientEntity client, ServiceEntity service, EmployeeEntity employee) {
+    public AppointmentServiceEntity(LocalDate dateStart, LocalTime timeStart, Integer totalCost, ClientEntity client, ServiceEntity service, EmployeeEntity employee, boolean isPointsAdded) {
         this.dateStart = dateStart;
         this.timeStart = timeStart;
         this.totalCost = totalCost;
         this.client = client;
         this.service = service;
         this.employee = employee;
+        this.isPointsAdded = isPointsAdded;
     }
 
     protected AppointmentServiceEntity() {
@@ -52,6 +54,15 @@ public class AppointmentServiceEntity extends BaseEntity {
 
     public void setTotalCost(Integer totalCost) {
         this.totalCost = totalCost;
+    }
+
+    @Column(name = "points")
+    public boolean isPointsAdded() {
+        return isPointsAdded;
+    }
+
+    public void setPointsAdded(boolean pointsAdded) {
+        isPointsAdded = pointsAdded;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

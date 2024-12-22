@@ -1,40 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация сотрудника</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #e8f5e9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background-color: #a5d6a7;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-green {
+            background-color: #66bb6a;
+            border-color: #66bb6a;
+            color: white;
+        }
+        .btn-green:hover {
+            background-color: #388e3c;
+            border-color: #388e3c;
+        }
+        h1 {
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            color: #1b5e20;
+        }
+    </style>
 </head>
 <body>
-<h1>Регистрация нового сотрудника</h1>
-
-<form th:action="@{/users/register-employee}" th:object="${userRegistrationDto}" method="post">
-    <label for="name">Имя:</label>
-    <input type="text" id="name" th:field="*{name}" required>
-    <br>
-
-    <label for="surname">Фамилия:</label>
-    <input type="text" id="surname" th:field="*{surname}" required>
-    <br>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" th:field="*{email}" required>
-    <br>
-
-    <label for="number_phone">Телефон:</label>
-    <input type="text" id="number_phone" th:field="*{number_phone}" required>
-    <br>
-
-    <label for="password">Пароль:</label>
-    <input type="password" id="password" th:field="*{password}" required>
-    <br>
-
-    <label for="confirmPassword">Подтвердите пароль:</label>
-    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required>
-    <br>
-
-    <button type="submit">Зарегистрировать</button>
-</form>
-
-<p th:if="${error != null}" style="color: red;" th:text="${error}"></p>
+<div class="register-container">
+    <h1 class="text-center">Регистрация сотрудника</h1>
+    <form th:action="@{/users/register-employee}" th:object="${userRegistrationDto}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Имя</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Введите имя" required>
+        </div>
+        <div class="mb-3">
+            <label for="surname" class="form-label">Фамилия</label>
+            <input type="text" id="surname" th:field="*{surname}" class="form-control" placeholder="Введите фамилию" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="Введите email" required>
+        </div>
+        <div class="mb-3">
+            <label for="number_phone" class="form-label">Телефон</label>
+            <input type="text" id="number_phone" th:field="*{number_phone}" class="form-control" placeholder="Введите номер телефона" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Пароль</label>
+            <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Введите пароль" required>
+        </div>
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Подтвердите пароль</label>
+            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" placeholder="Подтвердите пароль" required>
+        </div>
+        <p th:if="${error != null}" class="text-danger" th:text="${error}"></p>
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-green">Зарегистрировать</button>
+            <a href="/employee/list" class="btn btn-green">Назад</a>
+        </div>
+    </form>
+</div>
 </body>
 </html>

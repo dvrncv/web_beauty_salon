@@ -3,21 +3,15 @@ package beauty_salon.DTO;
 import jakarta.validation.constraints.*;
 
 public class UserRegistrationDTO {
-    // Делайте проверку на уникальность
     private String name;
-
 
     private String surname;
 
-    // Делайте проверку на уникальность
     private String email;
-
 
     private String number_phone;
 
-
     private String password;
-
 
     private String confirmPassword;
 
@@ -83,5 +77,4 @@ public class UserRegistrationDTO {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
-
 }

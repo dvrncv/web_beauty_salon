@@ -1,8 +1,9 @@
 package beauty_salon.DTO;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ServiceDTO {
+public class ServiceDTO implements Serializable {
     private Long id;
     private String name;
     private String description;

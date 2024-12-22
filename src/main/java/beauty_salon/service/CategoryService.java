@@ -10,9 +10,14 @@ import java.util.List;
 
 public interface CategoryService {
     ResponseEntity<CategoryDTO> createCategory(CategoryDTO categoryDTO);
-    ResponseEntity<CategoryDTO> findById (Long id);
+
+    ResponseEntity<CategoryDTO> findById(Long id);
+
     ResponseEntity<CategoryDTO> updateCategory(Long id, CategoryDTO categoryDTO);
+
     List<CategoryDTO> getAllCategories();
+
     String getCategoryNameById(Long categoryId);
+
     List<CategoryDTO> getCategories();
 }

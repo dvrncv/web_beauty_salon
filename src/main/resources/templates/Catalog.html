@@ -1,69 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalog</title>
-    <link rel="stylesheet" href="/css/css.css">
+    <title>Каталог</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        .hero {
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            color: #4CAF50;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            color: #4CAF50;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .search-form {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-form input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-form button:hover {
+            background-color: #45a049;
+        }
+
+        .catalog-container {
+            display: flex;
+            gap: 30px;
+            margin-left: 20px;
+        }
+
+        .sidebar {
+            flex: 0.5;
+            max-height: 700px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar h3 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 12px;
+        }
+
+        .sidebar ul li a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            color: #388E3C;
+        }
+
+        .services {
+            flex: 3;
+            min-height: 800px;
+        }
+
+        .services h3 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .service-item {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-item h4 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .service-item p {
+            margin-bottom: 5px;
+            color: #212529;
+        }
+
+        .btn-detail {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-detail:hover {
+            background-color: #45a049;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            color: #4CAF50;
+            text-decoration: underline;
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .pagination a:hover {
+            color: #388E3C;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-
 <div th:replace="~{fragments/navbar}"></div>
 
-<div class="container">
-    <div class="salon-info">
+<div class="hero">
+    <div class="container">
         <h1 th:text="${salon.nameSalon}">Beauty People</h1>
         <p th:text="${salon.staticInformation}">Всегда делаем красоту для вас!</p>
     </div>
-    
-    <div class="search-form">
-        <form action="/catalog" method="get">
-            <input type="text" name="searchService" placeholder="Поиск услуги"
-                   th:value="${categoryPageViewModel.serviceSerachInputModel.searchService}" />
-            <input type="hidden" name="page" th:value="${categoryPageViewModel.serviceSerachInputModel.page}" />
-            <input type="hidden" name="size" th:value="${categoryPageViewModel.serviceSerachInputModel.size}" />
-            <button type="submit">Поиск</button>
-        </form>
+</div>
+
+<div class="search-form">
+    <form action="/catalog" method="get">
+        <input type="text" name="searchService" placeholder="Поиск услуги"
+               th:value="${categoryPageViewModel.serviceSerachInputModel.searchService}" />
+        <input type="hidden" name="page" th:value="${categoryPageViewModel.serviceSerachInputModel.page}" />
+        <input type="hidden" name="size" th:value="${categoryPageViewModel.serviceSerachInputModel.size}" />
+        <button type="submit">Поиск</button>
+    </form>
+</div>
+
+<div class="catalog-container">
+    <div class="sidebar">
+        <ul>
+            <th:block th:each="category : ${categoryPageViewModel.category}">
+                <li>
+                    <a th:href="@{/catalog/category/{categoryId}(categoryId=${category.id})}"
+                       th:text="${category.name}"></a>
+                </li>
+            </th:block>
+        </ul>
     </div>
 
-    <div class="catalog-container">
-        <div class="sidebar">
-            <h3>Категории</h3>
-            <ul>
-                <th:block th:each="category : ${categoryPageViewModel.category}">
-                    <li>
-                        <a th:href="@{/catalog/category/{categoryId}(categoryId=${category.id})}"
-                           th:text="${category.name}"></a>
-                    </li>
-                </th:block>
-            </ul>
-        </div>
+    <div class="services">
+        <th:block th:if="${categoryPageViewModel.cardServiceViewModel == null or #lists.isEmpty(categoryPageViewModel.cardServiceViewModel)}">
+            <p>Нет услуг по вашему запросу.</p>
+        </th:block>
 
-        <div class="services">
-            <h3>Услуги</h3>
-            <th:block th:if="${categoryPageViewModel.cardServiceViewModel == null or #lists.isEmpty(categoryPageViewModel.cardServiceViewModel)}">
-                <p>Нет услуг по вашему запросу.</p>
-            </th:block>
-
-            <th:block th:each="service : ${categoryPageViewModel.cardServiceViewModel}">
-                <div class="service-item">
-                    <h4 th:text="${service.name}"></h4>
-                    <p th:text="'Цена: ' + ${service.price} + ' рублей'"></p>
-                    <p th:text="'Продолжительность: ' + ${service.duration} + ' минут'"></p>
-                    <p th:text="${service.description}"></p>
-                    <a th:href="@{/service/{serviceId}(serviceId=${service.id})}" class="btn-detail">Подробнее</a>
-                </div>
-            </th:block>
-
-            <div class="pagination">
-                <th:block th:if="${categoryPageViewModel.serviceSerachInputModel.page > 1}">
-                    <a th:href="@{/catalog(page=${categoryPageViewModel.serviceSerachInputModel.page - 1}, searchService=${categoryPageViewModel.serviceSerachInputModel.searchService}, categoryId=${categoryPageViewModel.serviceSerachInputModel.categoryId})}">Предыдущая</a>
-                </th:block>
-
-                <th:block th:if="${categoryPageViewModel.cardServiceViewModel.size() == categoryPageViewModel.serviceSerachInputModel.size}">
-                    <a th:href="@{/catalog(page=${categoryPageViewModel.serviceSerachInputModel.page + 1}, searchService=${categoryPageViewModel.serviceSerachInputModel.searchService}, categoryId=${categoryPageViewModel.serviceSerachInputModel.categoryId})}">Следующая</a>
-                </th:block>
+        <th:block th:each="service : ${categoryPageViewModel.cardServiceViewModel}">
+            <div class="service-item">
+                <h4 th:text="${service.name}"></h4>
+                <p th:text="'Цена: ' + ${service.price} + ' рублей'"></p>
+                <p th:text="'Продолжительность: ' + ${service.duration} + ' минут'"></p>
+                <p th:text="${service.description}"></p>
+                <a th:href="@{/service/{serviceId}(serviceId=${service.id})}" class="btn-detail">Подробнее</a>
             </div>
+        </th:block>
+
+        <div class="pagination">
+            <th:block th:if="${categoryPageViewModel.serviceSerachInputModel.page > 1}">
+                <a th:href="@{/catalog(page=${categoryPageViewModel.serviceSerachInputModel.page - 1}, searchService=${categoryPageViewModel.serviceSerachInputModel.searchService}, categoryId=${categoryPageViewModel.serviceSerachInputModel.categoryId})}">Предыдущая</a>
+            </th:block>
+
+            <th:block th:if="${categoryPageViewModel.cardServiceViewModel.size() == categoryPageViewModel.serviceSerachInputModel.size}">
+                <a th:href="@{/catalog(page=${categoryPageViewModel.serviceSerachInputModel.page + 1}, searchService=${categoryPageViewModel.serviceSerachInputModel.searchService}, categoryId=${categoryPageViewModel.serviceSerachInputModel.categoryId})}">Следующая</a>
+            </th:block>
         </div>
     </div>
 </div>

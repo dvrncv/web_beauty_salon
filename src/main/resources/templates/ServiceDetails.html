@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${service.name}">Service Details</title>
-    <link rel="stylesheet" href="/css/css.css">
+    <title th:text="${service.name}">Название услуги</title>
+    <link rel="stylesheet" href="/static/css.css">
 </head>
 <body>
+
 
 <div th:replace="~{fragments/navbar}"></div>
 
@@ -25,6 +26,5 @@
         <a href="/catalog" class="btn-back">Назад к каталогу</a>
     </div>
 </div>
-
 </body>
 </html>

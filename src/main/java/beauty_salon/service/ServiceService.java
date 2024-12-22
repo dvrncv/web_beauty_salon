@@ -12,13 +12,22 @@ import java.util.List;
 
 public interface ServiceService {
     ResponseEntity<ServiceDTO> createService(ServiceDTO serviceDTO);
-    ResponseEntity<ServiceDTO> findById (Long id);
+
+    ResponseEntity<ServiceDTO> findById(Long id);
+
     ResponseEntity<ServiceDTO> updateService(Long id, ServiceDTO serviceDTO);
-    ResponseEntity<ServiceDTO> deleteService(Long id);
+
     List<ServiceDTO> getAllServices();
-    List<ServiceDTO> getTopServices (LocalDate startDate, LocalDate endDate);
-    List<ServiceDTO> getServicesByCategory(Long categoryId);
-    Page<ServiceDTO> getServices(String searchTerm, Long categoryId, int page, int size);
+
+    List<ServiceDTO> getTopServices(LocalDate startDate, LocalDate endDate);
+
+    Page<ServiceDTO> getServicesByCategory(Long categoryId, int page, int size);
+
+    Page<ServiceDTO> getServices(String searchTerm, int page, int size);
+
     ServiceDTO getServiceById(Long id);
+
     ServiceDTO getServiceDetails(Long id);
+
+    Page<ServiceDTO> filterServices(Page<ServiceDTO> services, String searchTerm);
 }

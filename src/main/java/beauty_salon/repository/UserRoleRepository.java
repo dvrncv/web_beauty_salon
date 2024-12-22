@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRoleRepository extends GeneralRepository<Role,String> {
+public interface UserRoleRepository extends GeneralRepository<Role, String> {
     Optional<Role> findRoleByName(StaffRoles role);
+
     boolean existsRoleByName(StaffRoles role);
 }

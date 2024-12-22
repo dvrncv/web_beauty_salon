@@ -9,12 +9,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 public class AppUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -49,6 +47,6 @@ public class AppUserDetailsService implements UserDetailsService {
                 );
             }
         }
-        throw new UsernameNotFoundException("Такого нот фаунд");
+        throw new UsernameNotFoundException("Not found");
     }
 }

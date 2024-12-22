@@ -8,10 +8,10 @@ import beauty_salon.repository.CategoryRepository;
 import beauty_salon.repository.ServiceRepository;
 import beauty_salon.service.ServiceService;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
+@EnableCaching
 public class ServiceServiceImpl implements ServiceService {
     private final ServiceRepository serviceRepository;
     private final CategoryRepository categoryRepository;
@@ -32,10 +34,11 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    @CacheEvict(value = "catalogCache", allEntries = true)
     public ResponseEntity<ServiceDTO> createService(ServiceDTO serviceDTO) {
         ServiceEntity serviceEntity = modelMapper.map(serviceDTO, ServiceEntity.class);
         CategoryEntity categoryEntity = categoryRepository.findById(serviceDTO.getCategoryId())
-                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Категория не найдена"));
         serviceEntity.setCategory(categoryEntity);
         ServiceEntity savedServiceEntity = serviceRepository.save(serviceEntity);
         ServiceDTO savedServiceDTO = modelMapper.map(savedServiceEntity, ServiceDTO.class);
@@ -43,9 +46,10 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    @CacheEvict(value = "catalogCache", allEntries = true)
     public ResponseEntity<ServiceDTO> updateService(Long id, ServiceDTO serviceDTO) {
         ServiceEntity serviceEntity = serviceRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Service with ID " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Услуга с id " + id + " не найдена"));
         if (serviceDTO.getName() != null) {
             serviceEntity.setName(serviceDTO.getName());
         }
@@ -60,7 +64,7 @@ public class ServiceServiceImpl implements ServiceService {
         }
         if (serviceDTO.getCategoryId() != null) {
             CategoryEntity categoryEntity = categoryRepository.findById(serviceDTO.getCategoryId())
-                    .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("Категория с таким id " + id + " не найдена"));
             serviceEntity.setCategory(categoryEntity);
         }
         ServiceEntity updatedServiceEntity = serviceRepository.save(serviceEntity);
@@ -79,7 +83,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public ResponseEntity<ServiceDTO> findById(Long id) {
         ServiceEntity serviceEntity = serviceRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Service with ID " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Услуга с id " + id + " не найдена"));
         ServiceDTO serviceDTO = modelMapper.map(serviceEntity, ServiceDTO.class);
         return ResponseEntity.ok().body(serviceDTO);
     }
@@ -88,7 +92,6 @@ public class ServiceServiceImpl implements ServiceService {
     public List<ServiceDTO> getTopServices(LocalDate startDate, LocalDate endDate) {
         Pageable pageable = PageRequest.of(0, 5);
         List<Object[]> results = serviceRepository.findTopServices(startDate, endDate, pageable);
-
         return results.stream()
                 .map(result -> {
                     ServiceDTO serviceDTO = modelMapper.map(result, ServiceDTO.class);
@@ -104,41 +107,20 @@ public class ServiceServiceImpl implements ServiceService {
                 .collect(Collectors.toList());
     }
 
-
-    //    @Override
-//    public ResponseEntity<ServiceDTO> deleteService(Long id) {
-//        ServiceEntity serviceEntity = serviceRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Service with ID " + id + " not found"));
-//        serviceEntity.setDeleted(true);
-//        serviceRepository.save(serviceEntity);
-//        return ResponseEntity.noContent().build();
-
     @Override
-    public ResponseEntity<ServiceDTO> deleteService(Long id) {
-        serviceRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @Override
-    public List<ServiceDTO> getServicesByCategory(Long categoryId) {
-        List<ServiceEntity> services = serviceRepository.findByCategoryId(categoryId);
-        return services.stream()
-                .map(serviceEntity -> modelMapper.map(serviceEntity, ServiceDTO.class))
-                .collect(Collectors.toList());
-    }
-    @Override
-    public Page<ServiceDTO> getServices(String searchTerm, Long categoryId, int page, int size) {
+    @Cacheable(value = "catalogCache", key = "#categoryId != null ? #categoryId : 'all'")
+    public Page<ServiceDTO> getServicesByCategory(Long categoryId, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("name"));
-        if (searchTerm != null && categoryId != null) {
-            Page<ServiceEntity> servicesPage = serviceRepository.findByNameStartsWithIgnoreCaseAndCategoryId(searchTerm, categoryId, pageable);
-            return servicesPage.map(service -> modelMapper.map(service, ServiceDTO.class));
-        }
+        Page<ServiceEntity> servicePage = serviceRepository.findByCategoryId(categoryId, pageable);
+        return servicePage.map(service -> modelMapper.map(service, ServiceDTO.class));
+    }
+
+    @Override
+    @Cacheable(value = "catalogCache")
+    public Page<ServiceDTO> getServices(String searchTerm, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("name"));
         if (searchTerm != null) {
-            Page<ServiceEntity> servicesPage = serviceRepository.findByNameStartsWithIgnoreCase(searchTerm, pageable);
-            return servicesPage.map(service -> modelMapper.map(service, ServiceDTO.class));
-        }
-        if (categoryId != null) {
-            Page<ServiceEntity> servicesPage = serviceRepository.findByCategoryId(categoryId, pageable);
+            Page<ServiceEntity> servicesPage = serviceRepository.findByNameIgnoreCaseContaining(searchTerm, pageable);
             return servicesPage.map(service -> modelMapper.map(service, ServiceDTO.class));
         }
         Page<ServiceEntity> servicesPage = serviceRepository.findAll(pageable);
@@ -151,6 +133,8 @@ public class ServiceServiceImpl implements ServiceService {
                 .map(service -> modelMapper.map(service, ServiceDTO.class))
                 .orElse(null);
     }
+
+    @Override
     public ServiceDTO getServiceDetails(Long id) {
         return serviceRepository.findById(id)
                 .map(service -> new ServiceDTO(
@@ -161,7 +145,18 @@ public class ServiceServiceImpl implements ServiceService {
                         service.getDuration(),
                         service.getCategory().getId(),
                         service.getCategory().getName()))
-                .orElseThrow(() -> new EntityNotFoundException("Service with ID " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Услуга с id " + id + " не найдена"));
+    }
+
+    @Override
+    public Page<ServiceDTO> filterServices(Page<ServiceDTO> services, String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return services;
+        }
+        List<ServiceDTO> filteredServices = services.getContent().stream()
+                .filter(service -> service.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+                .collect(Collectors.toList());
+        return new PageImpl<>(filteredServices, services.getPageable(), filteredServices.size());
     }
 }
 

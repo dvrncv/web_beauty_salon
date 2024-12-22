@@ -1,16 +1,17 @@
 package beauty_salon.repository;
 
-import beauty_salon.entities.CategoryEntity;
 import beauty_salon.entities.ClientEntity;
-import beauty_salon.entities.EmployeeEntity;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ClientRepository extends GeneralRepository<ClientEntity,Long> {
-    Optional<ClientEntity> findByEmail(String email);
-    Optional<ClientEntity> findByName(String name);
-    List<ClientEntity> findByLoyaltyCardIsNull();
+public interface ClientRepository extends GeneralRepository<ClientEntity, Long> {
+    @Query("select c from ClientEntity c where c.email = :email")
+    Optional<ClientEntity> findByEmail(@Param("email") String email);
+
+    @Query("select c from ClientEntity c where c.id = :id")
+    Optional<ClientEntity> findById(@Param("id") Long id);
 }

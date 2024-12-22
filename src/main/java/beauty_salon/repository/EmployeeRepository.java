@@ -8,15 +8,21 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 @Repository
-public interface EmployeeRepository extends GeneralRepository<EmployeeEntity,Long> {
+public interface EmployeeRepository extends GeneralRepository<EmployeeEntity, Long> {
     @Query("select e.id as id, e.name as name, e.surname as surname, " +
-            "count(distinct a.client) as clientCount " +
+            "count (a.id) as appointmentCount " +
             "from AppointmentServiceEntity a " +
             "join a.employee e " +
             "where a.dateStart between :startDate and :endDate " +
             "group by e.id " +
-            "order by clientCount desc")
+            "order by appointmentCount desc")
     List<Object[]> findTopEmployees(LocalDate startDate, LocalDate endDate, Pageable pageable);
+
+    @Query("select e from EmployeeEntity e where e.email = :email")
+    Optional<EmployeeEntity> findByEmail(@Param("email") String email);
+
 }
 

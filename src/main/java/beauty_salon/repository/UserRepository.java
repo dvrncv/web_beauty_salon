@@ -1,14 +1,15 @@
 package beauty_salon.repository;
 
-import beauty_salon.entities.ClientEntity;
 import beauty_salon.entities.EmployeeEntity;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.Optional;
 
-public interface UserRepository extends GeneralRepository<EmployeeEntity,Long> {
-    Optional<EmployeeEntity> findByEmail(String email);
+public interface UserRepository extends GeneralRepository<EmployeeEntity, Long> {
+    @Query("select e from EmployeeEntity e where e.email = :email")
+    Optional<EmployeeEntity> findByEmail(@Param("email") String email);
 
-
-    Optional<EmployeeEntity> findByName(String name);
+    @Query("select e from EmployeeEntity e where e.name = :name")
+    Optional<EmployeeEntity> findByName(@Param("name") String name);
 }

@@ -1,9 +1,7 @@
 package beauty_salon;
 
-import beauty_salon.entities.EmployeeEntity;
 import beauty_salon.entities.Role;
 import beauty_salon.enums.StaffRoles;
-import beauty_salon.repository.EmployeeRepository;
 import beauty_salon.repository.UserRoleRepository;
 import beauty_salon.service.Impl.AuthService;
 import org.springframework.boot.CommandLineRunner;

@@ -30,6 +30,8 @@ public class AuthService {
     }
 
     public void registerStaff(UserRegistrationDTO registrationDTO) {
+        System.out.println(registrationDTO.getPassword());
+        System.out.println(registrationDTO.getConfirmPassword());
         if (!registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword())) {
             throw new RuntimeException("passwords.match");
         }
@@ -75,20 +77,15 @@ public class AuthService {
         this.userRepository.save(user);
     }
 
-    public EmployeeEntity getUser(String name) {
-        return userRepository.findByName(name)
-                .orElseThrow(() -> new UsernameNotFoundException(name + " was not found!"));
-    }
-
     public void registerClient(UserRegistrationDTO registrationDTO) {
         if (!registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword())) {
-            throw new RuntimeException("Passwords do not match");
+            throw new RuntimeException("Пароли не совпадает");
         }
 
         Optional<ClientEntity> existingClient = this.clientRepository.findByEmail(registrationDTO.getEmail());
 
         if (existingClient.isPresent()) {
-            throw new RuntimeException("Email is already in use");
+            throw new RuntimeException("Email уже используется");
         }
 
         ClientEntity client = new ClientEntity(
@@ -103,9 +100,10 @@ public class AuthService {
 
         this.clientRepository.save(client);
     }
+
     public ClientEntity getClient (String email) {
         return clientRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email + " was not found!"));
+                .orElseThrow(() -> new UsernameNotFoundException(email + " не найден!"));
     }
 }
 

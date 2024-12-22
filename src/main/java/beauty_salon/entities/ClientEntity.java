@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "client")
 public class ClientEntity extends BaseEntity {
-
     private String name;
     private String surname;
     private String numberPhone;

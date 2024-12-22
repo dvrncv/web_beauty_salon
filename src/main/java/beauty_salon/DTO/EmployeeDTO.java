@@ -6,14 +6,14 @@ public class EmployeeDTO {
     private String name;
     private String surname;
     private String email;
-    private Integer clientCount;
 
-    public EmployeeDTO(Long id, String name, String surname, String email, Integer clientCount) {
+
+    public EmployeeDTO(Long id, String name, String surname, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.clientCount = clientCount;
+
     }
 
     public EmployeeDTO(){
@@ -52,11 +52,4 @@ public class EmployeeDTO {
         this.email = email;
     }
 
-    public Integer getClientCount() {
-        return clientCount;
-    }
-
-    public void setClientCount(Integer clientCount) {
-        this.clientCount = clientCount;
-    }
 }
